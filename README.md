@@ -1,582 +1,297 @@
-<p align="center">
-  <img src="assets/jrok_logo.png" alt="JROK" width="480"/>
-</p>
+<div align="center">
 
-<p align="center">
-  <strong>An independent AI language model + professional cybersecurity lab — built entirely from scratch.</strong><br/>
-  <em>No external AI APIs. No borrowed weights. No shortcuts.</em>
-</p>
+<img src="assets/atlantia-logo-v2.png" alt="Atlantia Empire" width="160" />
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Built%20by-Skynetfc-00ff88?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNS0xMC01LTEwIDV6TTIgMTJsMTAgNSAxMC01LTEwLTUtMTAgNXoiLz48L3N2Zz4=" alt="Built by Skynetfc"/>
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
-  <img src="https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch"/>
-  <img src="https://img.shields.io/badge/Parameters-~85M-00ff88?style=for-the-badge" alt="~85M Parameters"/>
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License"/>
-</p>
+# Atlantia Empire
 
-<p align="center">
-  <a href="#-what-is-jrok">What is JROK?</a> •
-  <a href="#-architecture">Architecture</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-security-lab">Security Lab</a> •
-  <a href="#-project-structure">Project Structure</a> •
-  <a href="#-roadmap">Roadmap</a>
-</p>
+**261 domain-specialist AI agents, governed by a written constitution, running on the Ruflo multi-agent runtime.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-33%2F33_passing-brightgreen)](scripts/run-tests.sh)
+[![Smoke Test](https://img.shields.io/badge/standalone_smoke_test-14%2F14_passing-brightgreen)](scripts/no-ruflo-smoke.sh)
+[![Agents](https://img.shields.io/badge/agents-261-1B2A4A)](atlas-core/agents)
+[![Divisions](https://img.shields.io/badge/divisions-17-D98E2B)](divisions.json)
+[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-339933?logo=node.js&logoColor=white)](package.json)
+[![Not published](https://img.shields.io/badge/npm-not_published-lightgrey?logo=npm)](package.json)
+
+<sub>Created by <a href="https://skynetfc.netlify.app"><b>@skynetfc</b></a> · <img src="assets/branding/skynetfc-logo.png" width="16" valign="middle" /></sub>
+
+</div>
 
 ---
 
-## ⚡ What is JROK?
+## What is Atlantia Empire?
 
-**JROK** is two things in one repository:
+Atlantia Empire merges two existing open-source projects into one governed platform — it is not a rewrite of either, and it does not claim their engineering as its own:
 
-| Module | Description |
+| Layer | Where it comes from | License |
+|---|---|---|
+| **Persona library** — 232+ domain-specialist agent files (backend architects, tax analysts, UX researchers, etc.) | Derived from [agency-agents](https://github.com/msitarzewski/agency-agents) | MIT |
+| **Multi-agent runtime** — swarm orchestration, persistent memory, 3-tier model routing, 314 MCP tools | [Ruflo](https://github.com/ruvnet/ruflo) | MIT |
+| **Everything else** — quality/judicial division, the constitution, `atlas-core` conversion pipeline, CLI, eval harness, docs site, nation branding | Original Atlantia Empire work, by [@skynetfc](https://skynetfc.netlify.app) | MIT |
+
+Full credit trail in [`NOTICE`](NOTICE).
+
+### Why it exists
+
+Running 200+ AI personas as loose Markdown files works, but nothing stops a bad output from shipping, nothing tracks whether a persona is actually better than no persona at all, and nothing enforces who is allowed to do what. Atlantia Empire adds a real governance layer on top:
+
+- **A quality division that actually checks work.** Seven judicial-branch agents (Dissent, Hallucination Auditor, Provenance Auditor, Agent Evaluator, Deprecation Auditor, Arbitration Agent, Retrospective Agent) review every deliverable before it's accepted — not an opt-in extra.
+- **Eval-driven deprecation.** Every persona is benchmarked against a no-persona baseline. Negative results are published, not hidden (Constitution, Article VII). Underperforming agents get formally deprecated.
+- **Constitutional governance.** No agent reviews its own output. Regulated domains (finance, legal, security) default to ephemeral memory. Budget ceilings are enforced before a swarm runs, not discovered after. Every privileged action maps to a named role in `atlas-core/governance/roles.json`.
+- **A standalone CLI** that works with or without Ruflo installed.
+
+---
+
+## How To Use This Repo
+
+There are three ways to use Atlantia Empire, depending on how much of it you want.
+
+### 1. Just want the personas? (no install, no Ruflo)
+
+Every agent is a plain Markdown file — usable as a system prompt in any tool that accepts one.
+
+```bash
+git clone https://github.com/YOUR_USERNAME/atlantia-empire.git
+cd atlantia-empire
+
+# Read any persona directly
+cat engineering/engineering-backend-architect.md
+
+# Or install a whole division into Claude Code / another supported tool
+bash scripts/install.sh --division engineering --tool claude-code
+```
+
+### 2. Want the CLI + governance layer, but no Ruflo?
+
+```bash
+bash bin/atlantia run --demo    # Offline pipeline walkthrough — no API key, no network
+bash bin/atlantia census        # Current empire state: agent count, treasury, states
+bash bin/atlantia gsp           # Gross Specialist Product report
+bash bin/atlantia test          # Engineering test suite (33 checks)
+bash bin/atlantia docs          # Build the static docs site → docs/site/index.html
+bash bin/atlantia help          # Full command list
+```
+
+### 3. Want the full multi-agent platform (Ruflo + Atlantia)?
+
+```bash
+# 1. Install Ruflo
+npm install -g ruflo
+
+# 2. Build the atlas-core agent index from the persona library
+chmod +x scripts/build-atlas-core.sh
+./scripts/build-atlas-core.sh
+
+# 3. Install the atlas-core plugin into Ruflo
+ruflo plugin install ./atlas-core
+
+# 4. Spawn a single specialist
+ruflo agent spawn -t atlas-engineering-backend-architect --name arch-lead
+
+# 5. Or run a full governed swarm
+ruflo swarm init --topology hierarchical --max-agents 6 \
+  --strategy specialized --agent-pool atlas
+```
+
+Before any live swarm run, always run the constitutional pre-flight check:
+
+```bash
+bash scripts/constitutional-preflight.sh
+bash bin/atlantia preflight --plan your-swarm-plan.json
+```
+
+---
+
+## Is this published to npm or PyPI?
+
+**No.** `package.json` exists in this repo for local tooling (`npm run build`, `postinstall` chmod hooks, etc.) but **it has never been published** — there is no `atlantia` package on the npm registry or PyPI under this project. The `homepage`/`repository` URLs in `package.json` are placeholders pointing at `YOUR_ORG` until you push this to your own GitHub account and fill them in. If you want to publish it yourself later, that's a separate, deliberate step (`npm publish`) that has not been taken.
+
+---
+
+## Which repo is the "real" Atlantia project?
+
+If you're browsing this workspace and see three folders, here's exactly what each one is — this matters because only one of them is meant to be pushed to your own GitHub:
+
+| Folder | What it is | Push to GitHub? |
+|---|---|---|
+| **`atlantia/`** | ✅ **The actual Atlantia Empire product.** Everything in this README lives here — the CLI, the 261 agents, the constitution, the tests, the docs site, the branding. This is the one you clone/fork/push. | **Yes — this is the one.** |
+| `agency-agents/` | Read-only reference copy of the upstream persona library Atlantia's personas were derived from. Not modified. | No — it's someone else's upstream project, only kept locally as a source reference. |
+| `ruflo/` | Read-only reference copy of the Ruflo runtime Atlantia plugs into. Not modified. | No — same reason, it's the upstream runtime, not part of Atlantia's own code. |
+
+When you run the "Push This to GitHub" steps below, run them **from inside `atlantia/`**, not the workspace root — otherwise you'd be pushing the reference copies of other people's projects too.
+
+---
+
+## Push This to GitHub
+
+```bash
+cd atlantia
+
+git init                                      # only if not already a git repo
+git add .
+git commit -m "Atlantia Empire — initial commit"
+
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/atlantia-empire.git
+git push -u origin main
+```
+
+Replace `YOUR_USERNAME` with your GitHub username. Use a [Personal Access Token](https://github.com/settings/tokens) if prompted for a password — GitHub no longer accepts password auth over HTTPS.
+
+Once pushed, three CI workflows in `.github/workflows/` run automatically:
+
+| Workflow | What it checks | Trigger |
+|---|---|---|
+| `test-suite.yml` | 33-test engineering suite (frontmatter, RBAC, budget pre-flight, constitution) | Every push |
+| `no-ruflo-smoke.yml` | Verifies the project is usable standalone with zero Ruflo dependency | Every push + weekly |
+| `eval-harness.yml` | Runs the persona eval harness, publishes negative results per Article VII | Weekly |
+
+Check the **Actions** tab on your repo after the first push to confirm all three go green. Future changes: `git add . && git commit -m "..." && git push`.
+
+---
+
+## The 17 Divisions ("The 16 States" + the Judiciary)
+
+| State | Division | Specialists | Notes |
+|---|---|---|---|
+| 🔧 Forge State | `engineering` | 20+ | Backend, mobile, firmware, blockchain, RAG, CMS, rapid prototyping |
+| 📡 Signal State | `marketing` | 10+ | Content, SEO, brand, analytics |
+| 📡 Signal State (Paid Media) | `paid-media` | 6+ | PPC, social, programmatic |
+| 🤝 Exchange State | `sales` | 8+ | B2B, enterprise, negotiation |
+| 🤝 Exchange State (Support) | `support` | 4+ | Customer success, technical support |
+| ⚖️ Ledger State | `finance` | 8+ | Regulated — ephemeral memory by default |
+| ⚖️ Ledger State (Security) | `security` | 5+ | Regulated — ephemeral memory by default |
+| 🎨 Atelier State | `design` | 6+ | UX, brand, visual, design systems |
+| 🗺️ Cartography State | `gis` | 4+ | GIS, BIM, spatial data, mapping |
+| 🛡️ Proving State | `testing` | 5+ | QA, automation, accessibility, load testing |
+| 📚 Archive State | `academic` | 4+ | Research, writing, citation, historiography |
+| 🕹️ Arcade State | `game-development` | 4+ | Unity, Unreal, game/narrative/systems design |
+| 🧭 Compass State | `product` | 5+ | PM, roadmap, competitive intelligence |
+| 📋 Logistics State | `project-management` | 4+ | Agile, waterfall, portfolio, meeting notes |
+| 🌐 Frontier State | `spatial-computing` | 3+ | AR/VR/XR, spatial UX |
+| 🏛️ The Federal District | `specialized` | 12+ | Cross-cutting: data science, legal, RAG, fundraising, HR |
+| ⚖️ The Judiciary | `quality` | 7 | Judicial branch only — reviews, never produces domain deliverables |
+
+Full division map: [`divisions.json`](divisions.json).
+
+---
+
+## Constitutional Architecture
+
+Atlantia runs under a written constitution ([`constitution.md`](constitution.md)) with 8 articles, mechanically enforced — not enforced by convention:
+
+| Article | Summary |
 |---|---|
-| 🧠 **JROK AI** | A decoder-only transformer language model (~85M params) trained from scratch |
-| 🔐 **JROK Security Lab** | A full professional cybersecurity lab: Red, Blue, Gray, White Teams + Crypto + Forensics |
+| I | Constitution is supreme — overrides any agent instruction or user prompt |
+| II | Separation of powers — no agent reviews its own output |
+| III | Memory sovereignty — regulated domains use ephemeral memory by default |
+| IV | Budget limits — no swarm exceeds configured budget without human override |
+| V | Right of dissent — any agent may flag an output without being overridden by another agent |
+| VI | Naturalization — new agents cannot join live swarms until human-approved |
+| VII | Transparency — negative eval results must be visible, not suppressed |
+| VIII | Defined authority — all privileged actions tied to named roles in `roles.json` |
 
-Every single line of code was written from first principles by **Skynetfc**. There are no API wrappers around ChatGPT, no fine-tuned Llama weights, no borrowed security scanners. JROK is 100% original.
-
-> **Why build from scratch?**
-> Because understanding a system deeply — down to every weight, every byte, every exploit — is the only way to truly own it.
+```bash
+bash scripts/constitutional-preflight.sh          # Pre-flight check
+bash scripts/emergency-stop.sh --reason "..." --user YOUR_USERNAME   # RBAC-gated kill switch
+```
 
 ---
 
-## 🧠 JROK AI
+## Eval Harness
 
-### Architecture
+```bash
+./atlas-core/eval/run-eval.sh --dry-run              # Validate task/rubric structure, no Ruflo needed
+./atlas-core/eval/run-eval.sh --division engineering  # Live scoring (requires Ruflo)
+cat atlas-core/eval/runs/latest/report.md             # Always includes negative/flat results (Article VII)
+```
 
-JROK uses a **decoder-only transformer** architecture with modern improvements:
+Runs automatically every Monday via `.github/workflows/eval-harness.yml`.
 
-| Component | Specification |
+---
+
+## Project Structure
+
+```
+atlantia/
+├── bin/atlantia              # CLI entrypoint
+├── atlas-core/
+│   ├── agents/                # 261 Ruflo-ready generated agents (per division)
+│   ├── governance/             # roles.json (RBAC), budget.json, incident-log.jsonl
+│   └── eval/                  # Eval harness: tasks, rubrics, run script
+├── engineering/ marketing/ ... # 232+ raw persona source files, by division
+├── scripts/                   # build-atlas-core.sh, run-tests.sh, no-ruflo-smoke.sh, etc.
+├── docs/site/                 # Generated static docs site (9 pages)
+├── assets/                    # Brand assets — flag, seals, currency, civic documents
+├── archive/                   # Deprecated agent files land here (empty until Article VII triggers one)
+├── constitution.md            # The 8-article constitution
+├── divisions.json             # Machine-readable division/state map
+├── package.json                # Local tooling only — never published to npm (see above)
+└── README.md                  # This file
+```
+
+**Why `archive/` and some `assets/` subfolders are currently empty:** `archive/` is where the Deprecation Auditor moves an agent's file after a formal deprecation vote — no agent has been deprecated yet, so it's empty by design, not by mistake. A few `assets/` subfolders (`badges/`, `ceremonial/`, `currency/`, `dark/`, `division-icons/`, `stamps/`) are reserved for brand assets still being generated in batches (image-generation is rate-limited per session) — the exact prompts for every remaining asset are already written out in `assets/generate-remaining.sh`, and progress is tracked in `assets/ASSETS.md`.
+
+---
+
+## Attribution
+
+**Atlantia Empire is created and maintained by [@skynetfc](https://skynetfc.netlify.app).**
+
+Built on:
+- **[Ruflo](https://github.com/ruvnet/ruflo)** (MIT) — swarm orchestration, persistent memory (AgentDB/RuVector), 3-tier model routing, 314 MCP tools. Atlantia runs *on* Ruflo; it does not replicate Ruflo's runtime.
+- **[agency-agents](https://github.com/msitarzewski/agency-agents)** (MIT) — the original persona library Atlantia's specialist files are derived from.
+
+Full credit trail: [`NOTICE`](NOTICE).
+
+---
+
+## How This Runs
+
+Atlantia is a local command-line tool. There is no hosted Atlantia service, no account system, and no Atlantia-operated server processing your data. Everything runs on your own machine (or your own Ruflo-connected infrastructure), using your own API keys and your own compute. The only "hosted" element is the static documentation site, which contains no user data.
+
+---
+
+## Known Limitations
+
+1. **Memory tiering is not regulatory compliance.** Ephemeral memory prevents Atlantia-layer retention for regulated domains. It does not make any persona HIPAA/GDPR/SOC2 compliant — that depends on your infrastructure, contracts, and review processes.
+2. **Ruflo daemon risk.** Ruflo has documented history of runaway background daemons consuming quota. Use the Simulation Sandbox Agent and the constitutional pre-flight check before live swarms. Always configure daemon TTLs.
+3. **Eval scores require Ruflo.** The eval harness produces structural scaffolding without Ruflo installed. Live quality scores (persona vs. baseline delta) require `ruflo` in PATH. The harness degrades gracefully and documents the limitation in the report.
+4. **Agent Evaluator benchmarks are not external benchmarks.** Quality scores are relative (persona vs. baseline on Atlantia-defined tasks), not absolute quality ratings. A score of 8/10 means "measurably better than baseline for this task," not an external certification.
+
+---
+
+## The Nation
+
+> *"Not by chance, but charted clear, / Sixteen states, one compass here."*
+> — National Anthem of Atlantia (see [`assets/ANTHEM.md`](assets/ANTHEM.md))
+
+Atlantia is a small, functioning nation of AI specialists. Sixteen states, each home to a cluster of domain experts. A judiciary — the Quality division — headquartered separately from every state, whose only job is reviewing the states' work before it ships. A constitution that overrides any individual agent's instructions. A real immigration process for new agents: probation, an actual benchmark exam, then formal naturalization — never automatic. A national bank tracking what every operation actually costs, in Atlantian Credits (₳). A weekly Audit Day publishing benchmark results, wins and losses both. And an honest foreign-policy section explaining exactly which parts of this system are Atlantia's own work, and which are a treaty with Ruflo's runtime.
+
+Run `bash bin/atlantia census` to see the nation's current state for yourself.
+
+### Brand Assets
+
+Full catalogue: [`assets/ASSETS.md`](assets/ASSETS.md). Palette: Navy `#1B2A4A` · Amber `#D98E2B` · Teal `#2E6B6B` · Red `#B23B3B` · Off-white `#F4F1EC`.
+
+| Asset | File |
 |---|---|
-| Architecture | Decoder-only Transformer |
-| Parameters | ~85 million |
-| Context window | 1,024 tokens |
-| Vocabulary | 16,000 BPE tokens |
-| Embedding dim | 512 |
-| Attention heads | 16 |
-| Layers | 12 transformer blocks |
-| FFN hidden dim | 2,048 (4× embedding) |
-| Positional encoding | Learned |
-| Normalization | Pre-LayerNorm |
-| Training precision | AMP (FP16/BF16) |
-
-### JROK v2 (`Jrok/`) — Production Architecture
-
-The `Jrok/` directory contains a modular v2 design with production-grade features:
-
-- **Grouped Query Attention (GQA)** — reduces KV-cache memory by 4×
-- **RoPE (Rotary Position Embeddings)** — better length generalization
-- **RMSNorm** — faster, simpler normalization
-- **SwiGLU activations** — improved FFN performance
-- **Mixture of Experts (MoE)** — sparse computation for scaling
-- **Full RLHF / Constitutional AI alignment stack**
-- **Production serving** — load balancer, rate limiter, REST API
-
-### Training Pipeline
-
-```
-Public Data Sources          Corpus (~500M chars)         Trained Model
-─────────────────────        ──────────────────────       ──────────────
-Wikipedia      ──┐
-arXiv          ──┤  collect  →  corpus.txt  →  tokenize  →  BPE vocab
-Reddit         ──┤                                            16K tokens
-GitHub         ──┤                                               │
-Project        ──┘                                               ↓
-Gutenberg                                                    train
-                                                          100K steps
-                                                          AMP + cosine LR
-                                                               │
-                                                               ↓
-                                                           jrok_best.pt
-                                                               │
-                                                               ↓
-                                                            chat
-                                                        Rich terminal UI
-```
-
-### Reasoning Engine
-
-JROK includes a **4-stage Chain-of-Thought reasoning engine**:
-
-1. **Decompose** — break the problem into sub-questions
-2. **Research** — retrieve relevant knowledge from context
-3. **Synthesize** — combine evidence into a coherent answer
-4. **Verify** — check consistency and confidence before responding
+| National Flag | `assets/national-symbols/flag.png` |
+| National Seal | `assets/national-symbols/seal.png` |
+| Coat of Arms | `assets/national-symbols/coat-of-arms.png` |
+| Nation Map (16 states) | `assets/national-symbols/nation-map.png` |
+| Compass Rose Logomark | `assets/atlantia-logo-v2.png` |
+| App Icon / Favicon | `assets/atlantia-icon-v2.png` |
+| Constitution Header | `assets/civic-documents/constitution-header.png` |
+| Agent Passport Cover | `assets/civic-documents/passport-cover.png` |
+| Certificate of Naturalization | `assets/civic-documents/naturalization-certificate.png` |
+| Capital Plaque | `assets/national-symbols/prime-plaque.png` |
+| 10 of 16 State Seals (generated so far) | `assets/state-seals/<state-name>.png` |
+| Currency, stamps, division icons, dark mode | Pending — prompts ready in `assets/generate-remaining.sh` |
 
 ---
 
-## 🚀 Quick Start
+## License
 
-### Prerequisites
-
-```bash
-# Python 3.10 or higher required
-python --version
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 1. Collect Training Data
-
-```bash
-python main.py collect
-```
-
-Fetches ~500M characters of text from Wikipedia, arXiv, Reddit, GitHub, and Project Gutenberg using only free public APIs. No keys required (optional GitHub token improves rate limits).
-
-### 2. Train the Tokenizer
-
-```bash
-python main.py tokenize
-```
-
-Trains a Byte-Pair Encoding (BPE) tokenizer from scratch on the collected corpus. Learns 16,000 merge rules. No SentencePiece, no tiktoken — pure Python.
-
-### 3. Train the Model
-
-```bash
-python main.py train
-```
-
-Trains the 85M parameter transformer from random weights. Supports:
-- Automatic Mixed Precision (AMP) for GPU efficiency
-- Gradient accumulation (effective batch = 64 sequences)
-- Cosine learning rate schedule with warmup
-- Automatic checkpointing every 1,000 steps
-- Resume from checkpoint (`--resume` is on by default)
-
-### 4. Chat
-
-```bash
-python main.py chat
-```
-
-Opens a Rich terminal chat interface. Commands inside chat:
-- `/reasoning on` — show full chain-of-thought
-- `/temp 0.7` — set temperature
-- `/reset` — clear conversation history
-- `/info` — show model stats
-- `quit` — exit
-
-### 5. System Info
-
-```bash
-python main.py info
-```
-
-Shows hardware, model configuration, estimated parameter count, and file status.
-
----
-
-## 🔐 Security Lab
-
-JROK includes a **complete, professional-grade cybersecurity lab** with 6 teams. All tools use only real code — no mocked data, no simulated results.
-
-```bash
-python main.py security [team] [tool] [options]
-```
-
-> ⚠️ **Legal Warning:** These tools are for authorized testing only. Only use against systems you own or have explicit written permission to test. Unauthorized use is illegal.
-
----
-
-### 🔴 Red Team — Offensive Security
-
-```bash
-python main.py security red recon     --target example.com
-python main.py security red scan      --target 192.168.1.0/24 --ports 1-1024
-python main.py security red web       --target https://example.com
-python main.py security red password  --hash "$2b$12$..." --wordlist wordlists/passwords_top1000.txt
-python main.py security red osint     --target example.com
-python main.py security red payload   --type reverse_shell --lang python --lhost 10.0.0.1 --lport 4444
-python main.py security red network   --target 192.168.1.0/24
-python main.py security red report    --findings findings.json
-```
-
-| Tool | Capability |
-|---|---|
-| `recon.py` | DNS enumeration, subdomain brute-force, TLS inspection, email harvesting |
-| `scanner.py` | TCP/UDP port scan, banner grabbing, OS fingerprinting |
-| `web_tester.py` | SQLi (error/boolean/time-based), XSS, LFI, directory fuzzing |
-| `password_audit.py` | Hash identification, dictionary crack, strength scoring |
-| `osint.py` | WHOIS, CT logs, IP geolocation, GitHub secret scan, 40+ platform checks |
-| `network_tester.py` | ARP scan, protocol checks (FTP/SMTP/SNMP/LDAP/Redis/MongoDB) |
-| `payload_gen.py` | Reverse shells in 8 languages, web shells, encoders |
-| `report.py` | JSON + Markdown findings with CVSS-style scoring |
-
----
-
-### 🔵 Blue Team — Defensive Security
-
-```bash
-python main.py security blue monitor  --interval 5
-python main.py security blue ids      --watch --rules default
-python main.py security blue siem     --dashboard
-python main.py security blue honeypot --ssh --http --ftp
-python main.py security blue fim      --watch /etc --baseline
-python main.py security blue incident --playbook ransomware
-```
-
-| Tool | Capability |
-|---|---|
-| `monitor.py` | Real-time process/network/filesystem/resource monitoring |
-| `ids.py` | 15-rule signature IDS + anomaly detector |
-| `siem.py` | Full correlation engine, 20 stateful detection rules, MITRE-tagged alerts |
-| `network_monitor.py` | `/proc/net/tcp\|udp` tracking, ARP monitor, TOR exit detection |
-| `honeypot.py` | SSH/HTTP/FTP honeypots with canary file support |
-| `file_integrity.py` | HMAC-chained FIM with watch mode |
-| `log_analyzer.py` | Apache/Nginx/auth/syslog log parser |
-| `threat_intel.py` | IOC store, STIX export, VT/AbuseIPDB integration |
-| `incident.py` | Full IR lifecycle with 5 response playbooks |
-
----
-
-### 🟣 Gray Team — Vulnerability Research
-
-```bash
-python main.py security gray vuln     --target 192.168.1.1 --ports 22,80,443
-python main.py security gray purple   --technique T1059 --simulate
-python main.py security gray threat   --asset "Web App" --model stride
-python main.py security gray exploit  --search "apache log4j"
-python main.py security gray risk     demo
-```
-
-| Tool | Capability |
-|---|---|
-| `vuln_scanner.py` | NVD CVE lookup, TLS checks, port risk mapping |
-| `purple_exercise.py` | 12 ATT&CK techniques, gap analysis |
-| `threat_model.py` | STRIDE + DREAD threat modeling |
-| `exploit_db.py` | NVD CVE search, CISA KEV catalog, GHSA, attack chain builder |
-| `risk_matrix.py` | Full risk assessment: assets × threats × controls → heat map + Monte Carlo |
-
----
-
-### ⚪ White Team — Governance & Compliance
-
-```bash
-python main.py security white policy    generate POL-001 --org "JROK"
-python main.py security white policy    all --org "JROK"
-python main.py security white report    board
-python main.py security white report    monthly
-python main.py security white audit     --log audit.jsonl --verify
-python main.py security white scoring   --leaderboard
-python main.py security white roe       --generate --target "192.168.1.0/24"
-```
-
-| Tool | Capability |
-|---|---|
-| `policy.py` | 15 security policies (ISO 27001-aligned, HMAC-signed) |
-| `executive_report.py` | Monthly briefing, quarterly board report, compliance posture |
-| `compliance.py` | CIS Linux, NIST 800-53, OWASP, PCI DSS checklists |
-| `audit.py` | HMAC-chained tamper-evident audit trail |
-| `roe.py` | Signed Rules of Engagement documents |
-| `scoring.py` | Red/Blue team scoring and leaderboard |
-
----
-
-### 🔑 Crypto Module
-
-```bash
-python main.py security crypto hasher  sha256 --file data.bin
-python main.py security crypto cipher  encrypt --alg aes256gcm --in plain.txt --out enc.bin
-python main.py security crypto pki     create-ca --name "JROK Root CA"
-python main.py security crypto cert    inspect --host github.com
-python main.py security crypto stego   hide input.bmp secret.txt output.bmp
-python main.py security crypto stego   analyze suspicious.bmp
-```
-
-| Tool | Capability |
-|---|---|
-| `hasher.py` | Multi-algo hashing, HMAC, PBKDF2, scrypt, Merkle tree |
-| `cipher.py` | AES-256-GCM/CBC, ChaCha20-Poly1305, RSA-4096 |
-| `cert_inspector.py` | Live TLS fetch, CT log lookup, PEM parse |
-| `pki.py` | Full PKI: Root CA → Intermediate → Server cert, mTLS, CRL, PKCS#12 |
-| `steganography.py` | LSB stego in BMP/WAV/text, AES-encrypted payloads, chi-squared steganalysis |
-
----
-
-### 🔬 Forensics Module
-
-```bash
-python main.py security forensics disk     --image /dev/sdb --output case_001/
-python main.py security forensics memory   --pid 1234
-python main.py security forensics timeline --fs /mnt/evidence --auth /var/log/auth.log
-python main.py security forensics malware  --file suspicious.exe
-python main.py security forensics network  analyze capture.pcap
-python main.py security forensics registry hive NTUSER.DAT
-```
-
-| Tool | Capability |
-|---|---|
-| `disk_analyzer.py` | File carving (magic bytes), entropy analysis, PE header parser, chain of custody |
-| `memory_analyzer.py` | Live `/proc/PID/maps` + `/proc/PID/mem` analysis, shellcode detection |
-| `timeline.py` | Multi-source forensic timeline (FS MAC times, auth log, shell history, browser SQLite) |
-| `malware_classifier.py` | YARA-lite engine (14 rules), API behavior fingerprinting, packer detection, MITRE mapping |
-| `network_forensics.py` | Pure-Python PCAP parser, TCP stream reassembly, DNS/HTTP/TLS analysis, C2 beacon detection |
-| `registry_analyzer.py` | Windows registry hive parser (REGF binary + .reg text), persistence detection, UserAssist decode |
-
----
-
-## 📁 Project Structure
-
-```
-jrok/
-│
-├── main.py                        ← Unified entry point for AI + Security
-├── config.yaml                    ← All configuration (AI + Security Lab)
-├── requirements.txt               ← Python dependencies
-├── assets/
-│   └── jrok_logo.png              ← JROK brand logo
-│
-├── jrok/                          ← AI Core v1 (monolithic, production-ready)
-│   ├── tokenizer.py               ← BPE tokenizer from scratch
-│   ├── model.py                   ← 85M transformer, prefill + decode
-│   ├── data_pipeline.py           ← Wikipedia/arXiv/Reddit/GitHub/Gutenberg
-│   ├── trainer.py                 ← AMP, gradient accum, cosine LR
-│   ├── reasoning.py               ← 4-stage Chain-of-Thought
-│   └── chat.py                    ← Rich terminal interface
-│
-├── Jrok/                          ← AI Core v2 (modular, production architecture)
-│   ├── model/                     ← GQA, RoPE, RMSNorm, SwiGLU, MoE
-│   ├── training/                  ← Trainer, optimizer, checkpointing, distributed
-│   ├── data/                      ← Tokenizer, collector, cleaner, deduplicator
-│   ├── alignment/                 ← Constitution AI, RLHF, reward model, red team
-│   ├── inference/                 ← Engine, sampling strategies, KV cache
-│   ├── eval/                      ← Benchmarks, HumanEval, safety tests
-│   └── serving/                   ← REST API, load balancer, rate limiter
-│
-├── security/                      ← JROK Cybersecurity Lab
-│   ├── lab.py                     ← Unified security CLI dispatcher
-│   ├── config.yaml                ← Lab configuration
-│   ├── README.md                  ← Security lab usage guide
-│   │
-│   ├── red_team/                  ← Offensive Security
-│   │   ├── recon.py               ← DNS, subdomain, TLS, email harvest
-│   │   ├── scanner.py             ← TCP/UDP scan, banner, OS fingerprint
-│   │   ├── web_tester.py          ← SQLi, XSS, LFI, dir fuzz
-│   │   ├── password_audit.py      ← Hash crack, strength scoring
-│   │   ├── osint.py               ← WHOIS, CT logs, GitHub, 40+ platforms
-│   │   ├── network_tester.py      ← ARP, protocol checks, pivot detection
-│   │   ├── payload_gen.py         ← Shells in 8 languages, encoders
-│   │   └── report.py              ← JSON + Markdown findings
-│   │
-│   ├── blue_team/                 ← Defensive Security
-│   │   ├── monitor.py             ← Real-time system monitor
-│   │   ├── ids.py                 ← 15-rule signature IDS + anomaly
-│   │   ├── siem.py                ← Full SIEM: 20 rules, MITRE tags
-│   │   ├── network_monitor.py     ← /proc/net connection tracking
-│   │   ├── honeypot.py            ← SSH/HTTP/FTP honeypots
-│   │   ├── file_integrity.py      ← HMAC-chained FIM
-│   │   ├── log_analyzer.py        ← Apache/Nginx/auth/syslog
-│   │   ├── threat_intel.py        ← IOC store, STIX, VT/AbuseIPDB
-│   │   └── incident.py            ← IR lifecycle, 5 playbooks
-│   │
-│   ├── gray_team/                 ← Vulnerability Research
-│   │   ├── vuln_scanner.py        ← NVD CVE lookup, TLS checks
-│   │   ├── purple_exercise.py     ← 12 ATT&CK techniques
-│   │   ├── threat_model.py        ← STRIDE + DREAD
-│   │   ├── exploit_db.py          ← NVD, CISA KEV, GHSA, attack chains
-│   │   └── risk_matrix.py         ← Full risk assessment + heat map
-│   │
-│   ├── white_team/                ← Governance & Compliance
-│   │   ├── policy.py              ← 15 security policies (ISO 27001)
-│   │   ├── executive_report.py    ← Board/CEO reports
-│   │   ├── compliance.py          ← CIS, NIST, OWASP, PCI DSS
-│   │   ├── audit.py               ← Tamper-evident audit trail
-│   │   ├── roe.py                 ← Rules of Engagement docs
-│   │   └── scoring.py             ← Red/Blue team scoring
-│   │
-│   ├── crypto/                    ← Cryptography Tools
-│   │   ├── hasher.py              ← SHA/HMAC/PBKDF2/Merkle
-│   │   ├── cipher.py              ← AES-256-GCM, ChaCha20, RSA-4096
-│   │   ├── cert_inspector.py      ← Live TLS + CT log analysis
-│   │   ├── pki.py                 ← Full PKI + mTLS + PKCS#12
-│   │   └── steganography.py       ← LSB stego + chi-squared analysis
-│   │
-│   └── forensics/                 ← Digital Forensics
-│       ├── disk_analyzer.py       ← File carving, PE headers, CoC
-│       ├── memory_analyzer.py     ← Live /proc analysis, shellcode
-│       ├── timeline.py            ← Multi-source forensic timeline
-│       ├── malware_classifier.py  ← YARA-lite, behavior, MITRE
-│       ├── network_forensics.py   ← PCAP parser, beacon detection
-│       └── registry_analyzer.py   ← Windows registry forensics
-│
-├── wordlists/                     ← Security wordlists
-│   ├── subdomains.txt             ← 400+ subdomain names
-│   ├── common_dirs.txt            ← 350+ web paths/directories
-│   └── passwords_top1000.txt      ← Top 1000 common passwords
-│
-├── guides/
-│   ├── run-locally.md             ← Local setup guide
-│   └── run-on-colab.md            ← Google Colab guide
-│
-└── data/                          ← Generated (not committed)
-    ├── corpus.txt                 ← Collected training text
-    └── tokenizer.json             ← Trained BPE vocabulary
-```
-
----
-
-## 🛠️ Requirements
-
-```
-torch>=2.0.0
-pyyaml>=6.0
-rich>=13.0.0
-requests>=2.28.0
-cryptography>=41.0.0
-psutil>=5.9.0
-```
-
-Install everything:
-
-```bash
-pip install -r requirements.txt
-```
-
-> **GPU Training:** JROK trains on CPU but is designed for CUDA. A GPU with ≥8GB VRAM is recommended for the 85M model. Google Colab (free tier) works fine — see [`guides/run-on-colab.md`](guides/run-on-colab.md).
-
----
-
-## ⚙️ Configuration
-
-All settings live in `config.yaml`. Key sections:
-
-```yaml
-# AI model architecture
-model:
-  embedding_dim: 512        # increase to 768 for ~200M params
-  num_heads: 16
-  num_layers: 12
-  context_length: 1024      # increase to 2048 with more VRAM
-  vocab_size: 16000
-
-# Training hyperparameters
-training:
-  batch_size: 16            # reduce to 4 if OOM
-  learning_rate: 3.0e-4
-  max_steps: 100000         # ~10 hours on RTX 3080
-
-# Security lab
-security_config:
-  red_team:
-    max_threads: 50
-    port_scan_rate: 1000
-  blue_team:
-    monitor_interval: 5
-```
-
----
-
-## 📈 Scaling Guide
-
-Want a bigger model? Change these values in `config.yaml`:
-
-| Target | `embedding_dim` | `num_heads` | `num_layers` | Approx Params | VRAM |
-|---|---|---|---|---|---|
-| Tiny | 256 | 8 | 6 | ~12M | 2 GB |
-| **Default** | **512** | **16** | **12** | **~85M** | **8 GB** |
-| Medium | 768 | 12 | 24 | ~350M | 24 GB |
-| Large | 1024 | 16 | 24 | ~600M | 40 GB |
-| XL | 2048 | 16 | 32 | ~3B | 80 GB |
-
----
-
-## 🗺️ Roadmap
-
-### AI
-- [x] BPE tokenizer from scratch
-- [x] Transformer v1 (85M params)
-- [x] Training loop (AMP, cosine LR, gradient accum)
-- [x] 4-stage reasoning engine
-- [x] Rich chat interface
-- [x] v2 modular architecture (GQA, RoPE, RMSNorm, MoE)
-- [x] Full RLHF alignment stack
-- [x] Production serving (REST API, load balancer)
-- [ ] Distributed training (DDP)
-- [ ] Attention sink for long context (>4K tokens)
-- [ ] Web UI (Gradio / Streamlit)
-- [ ] Model export (ONNX / GGUF for llama.cpp)
-
-### Security Lab
-- [x] Red Team: recon, scanner, web, password, OSINT, payload, network
-- [x] Blue Team: monitor, IDS, SIEM (20 rules), honeypot, FIM, log, IR
-- [x] Gray Team: vuln scanner, purple exercise, threat model, exploit DB, risk matrix
-- [x] White Team: 15 policies, board reports, compliance, audit, scoring
-- [x] Crypto: hashing, AES/ChaCha20/RSA, PKI, steganography
-- [x] Forensics: disk, memory, timeline, malware classifier, network PCAP, registry
-- [ ] C2 framework (for authorized red team exercises)
-- [ ] Active Directory attack paths (BloodHound-style, pure Python)
-- [ ] Cloud security scanner (AWS/GCP/Azure misconfig)
-- [ ] Mobile (APK static analysis)
-
----
-
-## 🤝 Contributing
-
-JROK is a personal project by Skynetfc. Contributions, bug reports, and ideas are welcome.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-Please follow these principles:
-- **No mocks** — all code must produce real results
-- **No external AI APIs** — the AI module must stay fully independent
-- **Comments** — explain the *why*, not the *what*
-- **Security ethics** — all offensive tools must default to authorized-only behavior
-
----
-
-## ⚖️ Legal & Ethics
-
-### AI
-JROK is trained exclusively on publicly available text. No proprietary or copyrighted training data is included. The training pipeline uses free public APIs only.
-
-### Security Tools
-The security tools in this repository are intended **solely for:**
-- Authorized penetration testing of systems you own
-- Academic and educational security research
-- CTF (Capture the Flag) competitions
-- Professional security assessments with written permission
-
-**Using these tools against systems without authorization is illegal** under the Computer Fraud and Abuse Act (CFAA), the UK Computer Misuse Act, and equivalent laws in most jurisdictions. The author assumes no liability for misuse.
-
----
-
-## 📄 License
-
-```
-MIT License
-
-Copyright (c) 2026 Skynetfc
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-```
-
----
-
-<p align="center">
-  <img src="assets/jrok_logo.png" alt="JROK" width="200"/>
-  <br/>
-  <strong>JROK</strong> — Built from nothing, by Skynetfc.
-  <br/>
-  <em>Every weight earned. Every byte written. Every exploit understood.</em>
-</p>
+MIT — see [`LICENSE`](LICENSE). Third-party credits: see [`NOTICE`](NOTICE).
