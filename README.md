@@ -329,4 +329,122 @@ Seven agents make up the Judicial branch (`quality` division). None of them prod
 
 ## Economic Model — Gross Specialist Product
 
-`atlantia gsp` reports a "Gross Specialist Product" figure — the aggregate output value across all divisions for a given period, computed from real Ruflo cost/usage data when connected, or the empire's tracked historical figures in standalone mode. It's Atlantia's framing device for treating 
+`atlantia gsp` reports a "Gross Specialist Product" figure — the aggregate output value across all divisions for a given period, computed from real Ruflo cost/usage data when connected, or the empire's tracked historical figures in standalone mode. It's Atlantia's framing device for treating agent output as a measurable, division-attributable economy rather than an opaque batch of API calls, and it is one input the Capital Allocation Agent uses when proposing budget reallocation between divisions.
+
+```bash
+atlantia gsp --period weekly
+atlantia gsp --period daily
+```
+
+---
+
+## Evaluation Harness
+
+```bash
+./atlas-core/eval/run-eval.sh --dry-run               # Validate task/rubric structure — no Ruflo needed
+./atlas-core/eval/run-eval.sh --division engineering    # Live scoring (requires Ruflo)
+cat atlas-core/eval/runs/latest/report.md               # Always includes negative/flat results (Article VII)
+```
+
+Scoring uses four rubrics — `content-creation`, `strategy-planning`, `diagnostic-recommendation`, and `audit-review` — applied across division-specific task files in `atlas-core/eval/tasks/`. The harness runs automatically every Monday via `.github/workflows/eval-harness.yml`, and its output feeds the Deprecation Auditor and `atlantia improvement-report`.
+
+---
+
+## Testing & Continuous Integration
+
+```bash
+bash scripts/run-tests.sh        # 33-test engineering suite
+bash scripts/no-ruflo-smoke.sh   # 14-check standalone smoke test
+```
+
+The engineering suite covers frontmatter correctness, memory-tiering enforcement, RBAC role checks, budget pre-flight logic, and constitutional compliance. The smoke test independently verifies the project is fully usable with zero Ruflo installed.
+
+| Workflow | Checks | Trigger |
+|---|---|---|
+| `.github/workflows/test-suite.yml` | Full 33-test engineering suite | Every push |
+| `.github/workflows/no-ruflo-smoke.yml` | Standalone usability, zero Ruflo dependency | Every push, weekly |
+| `.github/workflows/eval-harness.yml` | Persona eval harness, publishes negative results per Article VII | Weekly |
+
+---
+
+## Repository Layout
+
+```
+atlantia/
+├── bin/atlantia                 CLI entrypoint
+├── atlas-core/
+│   ├── agents/                  185 generated Ruflo-native agents, by division
+│   ├── governance/               roles.json, budget.json, incident-log.jsonl,
+│   │                              dissent-log.jsonl, lessons-ledger.jsonl
+│   └── eval/                    Evaluation harness — tasks/, rubrics/, run-eval.sh
+├── engineering/ marketing/ ...  232+ raw persona source files, one directory per division
+├── scripts/                     build-atlas-core.sh, run-tests.sh, no-ruflo-smoke.sh,
+│                                 constitutional-preflight.sh, emergency-stop.sh, install.sh
+├── docs/site/                   Generated static documentation site (9 pages)
+├── assets/                      Brand assets — flag, seals, currency, civic documents
+├── archive/                     Deprecated agent files, populated after a formal deprecation vote
+├── constitution.md              The 8-article constitution
+├── divisions.json               Machine-readable division map
+├── CONTRIBUTING.md              Persona authoring conventions and PR guidelines
+├── SECURITY.md                  Vulnerability disclosure policy
+├── CHANGELOG.md                 Version history
+├── NOTICE                       Full third-party credit trail
+├── LICENSE                      MIT license text
+├── package.json                 Local tooling manifest
+├── PROGRESS.md                  Full build history and current project status
+└── README.md                    This file
+```
+
+---
+
+## Brand & National Identity
+
+Atlantia frames its 17 divisions as 16 states plus a Judiciary, with a full national identity system to match — a flag, seal, coat of arms, constitution, currency, and civic documents. This is documentation flavor, not fiction layered over missing functionality: every command referenced (`atlantia census`, `atlantia gsp`, the constitution, the roles file) is real and runnable.
+
+Palette: Navy `#1B2A4A` · Amber `#D98E2B` · Teal `#2E6B6B` · Red `#B23B3B` · Off-white `#F4F1EC`.
+
+| Asset | File |
+|---|---|
+| National Flag | `assets/national-symbols/flag.png` |
+| National Seal | `assets/national-symbols/seal.png` |
+| Coat of Arms | `assets/national-symbols/coat-of-arms.png` |
+| Nation Map (16 states) | `assets/national-symbols/nation-map.png` |
+| Compass Rose Logomark | `assets/atlantia-logo-v2.png` |
+| Constitution Header | `assets/civic-documents/constitution-header.png` |
+| Agent Passport Cover | `assets/civic-documents/passport-cover.png` |
+| Certificate of Naturalization | `assets/civic-documents/naturalization-certificate.png` |
+| State Seals (10 of 16 generated) | `assets/state-seals/<state-name>.png` |
+| Currency, stamps, division icons, dark mode | Pending — prompts staged in `assets/generate-remaining.sh`, tracked in `assets/ASSETS.md` |
+
+---
+
+## Package & Publishing Status
+
+`package.json` defines local tooling only — `npm run build`, `postinstall` chmod hooks, and script aliases for the CLI. This project has not been published to the npm registry or PyPI; there is no installable `atlantia` package on either registry under this name. The `homepage` and `repository` fields are placeholders, to be filled in once this repository is pushed to your own GitHub account.
+
+---
+
+## Known Limitations
+
+1. **Memory tiering is not regulatory compliance.** Ephemeral memory prevents Atlantia-layer retention for regulated domains; it does not make any persona HIPAA/GDPR/SOC2 compliant on its own — that depends on your infrastructure, contracts, and review processes.
+2. **Ruflo daemon risk.** Ruflo has documented history of runaway background daemons consuming quota. Always configure `daemon_ttl_minutes` and use the constitutional pre-flight check before live swarms.
+3. **Eval scores require Ruflo.** The eval harness produces structural scaffolding without Ruflo installed; live quality scores require `ruflo` in `PATH`. The harness degrades gracefully and documents this limitation directly in its report.
+4. **Agent Evaluator benchmarks are relative, not external.** A score of 8/10 means "measurably better than the no-persona baseline for this task" — it is not an external, third-party quality certification.
+
+---
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for persona authoring conventions, the deprecation lifecycle, and pull request guidelines.
+
+## Security
+
+See [`SECURITY.md`](SECURITY.md) to report a vulnerability.
+
+---
+
+## License & Attribution
+
+Released under the [MIT License](LICENSE).
+
+Built by [**@skynetfc**](https://skynetfc.netlify.app). Built on [Ruflo](https://github.com/ruvnet/ruflo) (MIT) and [agency-agents](https://github.com/msitarzewski/agency-agents) (MIT) — full itemized credit trail in [`NOTICE`](NOTICE).
